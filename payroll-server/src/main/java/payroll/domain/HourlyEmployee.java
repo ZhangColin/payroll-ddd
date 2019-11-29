@@ -1,5 +1,6 @@
 package payroll.domain;
 
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -15,6 +16,12 @@ public class HourlyEmployee {
     }
 
     public Payroll payroll() {
-        return null;
+        final int totalHours = timeCards.stream()
+                .map(TimeCard::getWorkHours)
+                .reduce(0, (hours, total) -> hours + total);
+
+        Collections.sort(timeCards);
+
+        return new Payroll(timeCards.get(0).getWorkDay(), timeCards.get(timeCards.size()-1).getWorkDay(), salaryOfHour.multiple(totalHours));
     }
 }
