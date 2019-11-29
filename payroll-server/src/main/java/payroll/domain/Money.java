@@ -1,25 +1,61 @@
 package payroll.domain;
 
-import lombok.EqualsAndHashCode;
+import java.math.BigDecimal;
+import java.util.Objects;
 
 /**
  * @author colin
  */
-@EqualsAndHashCode
 public class Money {
-    private final long value;
+    public static final int SCALE = 2;
+    private final BigDecimal value;
     private final Currency currency;
 
-    private Money(long value, Currency currency) {
+    private Money(double value, Currency currency) {
+        this.value = BigDecimal.valueOf(value).setScale(SCALE, BigDecimal.ROUND_HALF_UP);
+        this.currency = currency;
+    }
+
+    private Money(BigDecimal value, Currency currency) {
         this.value = value;
         this.currency = currency;
     }
 
-    public Money multiply(int factor) {
-        return new Money(value * factor, currency);
+
+    public Money multiply(double factor) {
+        final BigDecimal factorDecimal = BigDecimal.valueOf(factor).setScale(SCALE, BigDecimal.ROUND_HALF_UP);
+        return new Money(value.multiply(factorDecimal).setScale(SCALE, BigDecimal.ROUND_HALF_UP), currency);
     }
 
-    public static Money of(long value, Currency currency) {
+    public static Money of(double value, Currency currency) {
         return new Money(value, currency);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+
+        Money money = (Money) obj;
+        return Objects.equals(value, money.value) &&
+                currency == money.currency;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(value, currency);
+    }
+
+    @Override
+    public String toString() {
+        return "Money {" +
+                "face value = " + value +
+                ", currency = " + currency +
+                "}";
     }
 }

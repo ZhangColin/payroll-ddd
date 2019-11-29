@@ -1,5 +1,6 @@
 package payroll.domain;
 
+
 /**
  * @author colin
  */

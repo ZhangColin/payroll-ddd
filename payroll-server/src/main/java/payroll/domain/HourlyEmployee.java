@@ -21,6 +21,11 @@ public class HourlyEmployee {
                 .map(TimeCard::getWorkHours)
                 .reduce(0, (hours, total) -> hours + total);
 
+        timeCards.stream()
+                .filter(timeCard -> timeCard.getWorkHours() > 8)
+                .map(timeCard -> timeCard.getWorkHours() - 8)
+                .reduce(0, (hours, total) -> hours + total);
+
         final Period settlementPeriod = settlementPeriod();
 
         return new Payroll(
