@@ -9,6 +9,7 @@ import java.time.LocalDate;
  */
 @Getter
 public class TimeCard implements Comparable<TimeCard> {
+    public static final int MAXIMUM_REGULAR_HOURS = 8;
     private LocalDate workDay;
     private int workHours;
 
@@ -26,5 +27,17 @@ public class TimeCard implements Comparable<TimeCard> {
         } else {
             return 0;
         }
+    }
+
+    int getOvertimeWorkHours() {
+        return getWorkHours() - MAXIMUM_REGULAR_HOURS;
+    }
+
+    boolean isOvertime() {
+        return getWorkHours() > MAXIMUM_REGULAR_HOURS;
+    }
+
+    int getRegularWorkHours() {
+        return isOvertime() ? MAXIMUM_REGULAR_HOURS : getWorkHours();
     }
 }
