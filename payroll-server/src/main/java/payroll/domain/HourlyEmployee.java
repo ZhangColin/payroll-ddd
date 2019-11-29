@@ -8,6 +8,8 @@ import java.util.List;
  * @author colin
  */
 public class HourlyEmployee {
+    public static final int MAXIMUM_REGULAR_HOURS = 8;
+    public static final double OVERTIME_FACTOR = 1.5;
     private final List<TimeCard> timeCards;
     private final Money salaryOfHour;
 
@@ -18,18 +20,18 @@ public class HourlyEmployee {
 
     public Payroll payroll() {
         final int totalHours = timeCards.stream()
-                .map(timeCard -> timeCard.getWorkHours() > 8 ? 8 : timeCard.getWorkHours())
+                .map(timeCard -> timeCard.getWorkHours() > MAXIMUM_REGULAR_HOURS ? MAXIMUM_REGULAR_HOURS : timeCard.getWorkHours())
                 .reduce(0, Integer::sum);
 
         final int overtimeHours = timeCards.stream()
-                .filter(timeCard -> timeCard.getWorkHours() > 8)
-                .map(timeCard -> timeCard.getWorkHours() - 8)
+                .filter(timeCard -> timeCard.getWorkHours() > MAXIMUM_REGULAR_HOURS)
+                .map(timeCard -> timeCard.getWorkHours() - MAXIMUM_REGULAR_HOURS)
                 .reduce(0, Integer::sum);
 
         final Period settlementPeriod = settlementPeriod();
 
         final Money regularSalary = salaryOfHour.multiply(totalHours);
-        final Money overtimeSalary = salaryOfHour.multiply(1.5).multiply(overtimeHours);
+        final Money overtimeSalary = salaryOfHour.multiply(OVERTIME_FACTOR).multiply(overtimeHours);
         final Money totalSalary = regularSalary.add(overtimeSalary);
 
         return new Payroll(
