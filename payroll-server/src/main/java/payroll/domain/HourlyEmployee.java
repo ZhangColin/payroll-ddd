@@ -1,7 +1,5 @@
 package payroll.domain;
 
-import java.time.LocalDate;
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -17,16 +15,14 @@ public class HourlyEmployee {
         this.salaryOfHour = salaryOfHour;
     }
 
-    public Payroll payroll() {
+    public Payroll payroll(Period period) {
         final Money regularSalary = calculateRegularSalary();
         final Money overtimeSalary = calculateOvertimeSalary();
         final Money totalSalary = regularSalary.add(overtimeSalary);
 
-        final Period settlementPeriod = settlementPeriod();
-
         return new Payroll(
-                settlementPeriod.beginDate,
-                settlementPeriod.endDate,
+                period.getBeginDate(),
+                period.getEndDate(),
                 totalSalary);
     }
 
@@ -45,21 +41,4 @@ public class HourlyEmployee {
         return salaryOfHour.multiply(regularHours);
     }
 
-    private Period settlementPeriod() {
-        Collections.sort(timeCards);
-
-        final LocalDate beginDate = timeCards.get(0).getWorkDay();
-        final LocalDate endDate = timeCards.get(timeCards.size() - 1).getWorkDay();
-        return new Period(beginDate, endDate);
-    }
-
-    private class Period {
-        private final LocalDate beginDate;
-        private final LocalDate endDate;
-
-        public Period(LocalDate beginDate, LocalDate endDate) {
-            this.beginDate = beginDate;
-            this.endDate = endDate;
-        }
-    }
 }
