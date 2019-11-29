@@ -21,6 +21,9 @@ public class Money {
         this.currency = currency;
     }
 
+    public Money add(Money money) {
+        return new Money(value.add(money.value).setScale(SCALE, BigDecimal.ROUND_HALF_UP), currency);
+    }
 
     public Money multiply(double factor) {
         final BigDecimal factorDecimal = BigDecimal.valueOf(factor).setScale(SCALE, BigDecimal.ROUND_HALF_UP);

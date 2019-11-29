@@ -18,20 +18,24 @@ public class HourlyEmployee {
 
     public Payroll payroll() {
         final int totalHours = timeCards.stream()
-                .map(TimeCard::getWorkHours)
-                .reduce(0, (hours, total) -> hours + total);
+                .map(timeCard -> timeCard.getWorkHours() > 8 ? 8 : timeCard.getWorkHours())
+                .reduce(0, Integer::sum);
 
-        timeCards.stream()
+        final int overtimeHours = timeCards.stream()
                 .filter(timeCard -> timeCard.getWorkHours() > 8)
                 .map(timeCard -> timeCard.getWorkHours() - 8)
-                .reduce(0, (hours, total) -> hours + total);
+                .reduce(0, Integer::sum);
 
         final Period settlementPeriod = settlementPeriod();
+
+        final Money regularSalary = salaryOfHour.multiply(totalHours);
+        final Money overtimeSalary = salaryOfHour.multiply(1.5).multiply(overtimeHours);
+        final Money totalSalary = regularSalary.add(overtimeSalary);
 
         return new Payroll(
                 settlementPeriod.beginDate,
                 settlementPeriod.endDate,
-                salaryOfHour.multiply(totalHours));
+                totalSalary);
     }
 
     private Period settlementPeriod() {
