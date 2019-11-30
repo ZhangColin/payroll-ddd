@@ -60,7 +60,20 @@ public class HourlyEmployeeTest {
 
         // then
         assertThat(payroll).isNotNull();
-        assertThat(payroll.getAmount()).isEqualTo(Money.of(0.00, Currency.RMB));
+        assertThat(payroll.getAmount()).isEqualTo(Money.zero());
+    }
+
+    @Test
+    public void should_be_0_given_null_time_card() {
+        // given
+        final HourlyEmployee hourlyEmployee = new HourlyEmployee(null, salaryOfHour);
+
+        // when
+        Payroll payroll = hourlyEmployee.payroll(settlementPeriod);
+
+        // then
+        assertThat(payroll).isNotNull();
+        assertThat(payroll.getAmount()).isEqualTo(Money.zero());
     }
 
     private List<TimeCard> createTimeCards(int workHours1, int workHours2, int workHours3, int workHours4, int workHours5) {

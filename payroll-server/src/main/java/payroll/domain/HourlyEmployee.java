@@ -1,6 +1,7 @@
 package payroll.domain;
 
 import java.util.List;
+import java.util.Objects;
 
 /**
  * @author colin
@@ -16,6 +17,9 @@ public class HourlyEmployee {
     }
 
     public Payroll payroll(Period period) {
+        if (Objects.isNull(timeCards) || timeCards.isEmpty()) {
+            return new Payroll(period.getBeginDate(), period.getEndDate(), Money.zero());
+        }
         final Money regularSalary = calculateRegularSalary();
         final Money overtimeSalary = calculateOvertimeSalary();
         final Money totalSalary = regularSalary.add(overtimeSalary);
