@@ -11,7 +11,7 @@ import static java.util.Arrays.asList;
 import static java.util.Collections.singletonList;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
-import static payroll.fixture.EmployeeFixture.createHourlyEmployee;
+import static payroll.fixture.EmployeeFixture.hourlyEmployeeOf;
 
 public class HourlyEmployeePayrollCalculatorTest {
 
@@ -45,7 +45,7 @@ public class HourlyEmployeePayrollCalculatorTest {
     public void should_calculate_payroll_when_only_one_matched_employee_found() {
         // given
         String employeeId = "emp200901011111";
-        final HourlyEmployee hourlyEmployee = createHourlyEmployee(employeeId, 8, 8, 8, 8, 8);
+        final HourlyEmployee hourlyEmployee = hourlyEmployeeOf(employeeId, 8, 8, 8, 8, 8);
         final List<HourlyEmployee> hourlyEmployees = singletonList(hourlyEmployee);
 
         when(mockRepository.allEmployeesOf(settlementPeriod)).thenReturn(hourlyEmployees);
@@ -63,11 +63,11 @@ public class HourlyEmployeePayrollCalculatorTest {
     public void should_calculate_payroll_when_more_than_one_matched_employee_found() {
         // given
         String employeeId1 = "emp200901011111";
-        final HourlyEmployee hourlyEmployee1 = createHourlyEmployee(employeeId1, 8, 8, 8, 8, 8);
+        final HourlyEmployee hourlyEmployee1 = hourlyEmployeeOf(employeeId1, 8, 8, 8, 8, 8);
         String employeeId2 = "emp200901011112";
-        final HourlyEmployee hourlyEmployee2 = createHourlyEmployee(employeeId2, 9, 7, 10, 10, 8);
+        final HourlyEmployee hourlyEmployee2 = hourlyEmployeeOf(employeeId2, 9, 7, 10, 10, 8);
         String employeeId3 = "emp200901011113";
-        final HourlyEmployee hourlyEmployee3 = createHourlyEmployee(employeeId3, null);
+        final HourlyEmployee hourlyEmployee3 = hourlyEmployeeOf(employeeId3, null);
         final List<HourlyEmployee> hourlyEmployees = asList(hourlyEmployee1, hourlyEmployee2, hourlyEmployee3);
 
         when(mockRepository.allEmployeesOf(settlementPeriod)).thenReturn(hourlyEmployees);
