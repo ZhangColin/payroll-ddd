@@ -8,24 +8,26 @@ import java.util.Objects;
  */
 public class HourlyEmployee {
     public static final double OVERTIME_FACTOR = 1.5;
+    private String employeeId;
     private final List<TimeCard> timeCards;
     private final Money salaryOfHour;
 
-    public HourlyEmployee(List<TimeCard> timeCards, Money salaryOfHour) {
+    public HourlyEmployee(String employeeId, List<TimeCard> timeCards, Money salaryOfHour) {
+        this.employeeId = employeeId;
         this.timeCards = timeCards;
         this.salaryOfHour = salaryOfHour;
     }
 
     public Payroll payroll(Period period) {
         if (Objects.isNull(timeCards) || timeCards.isEmpty()) {
-            return new Payroll(period.getBeginDate(), period.getEndDate(), Money.zero());
+            return new Payroll(employeeId, period.getBeginDate(), period.getEndDate(), Money.zero());
         }
         final Money regularSalary = calculateRegularSalary();
         final Money overtimeSalary = calculateOvertimeSalary();
         final Money totalSalary = regularSalary.add(overtimeSalary);
 
         return new Payroll(
-                period.getBeginDate(),
+                employeeId, period.getBeginDate(),
                 period.getEndDate(),
                 totalSalary);
     }

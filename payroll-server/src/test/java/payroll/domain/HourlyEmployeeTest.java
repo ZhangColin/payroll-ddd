@@ -17,18 +17,20 @@ public class HourlyEmployeeTest {
             LocalDate.of(2019, 11, 4),
             LocalDate.of(2019, 11, 8));
     private final Money salaryOfHour = Money.of(100, Currency.RMB);
+    private final String employeeId = "emp200901011111";
 
     @Test
     public void should_calculate_payroll_by_work_hours_in_a_week() {
         // given
         final List<TimeCard> timeCards = createTimeCards(8, 8, 8, 8, 8);
-        final HourlyEmployee hourlyEmployee = new HourlyEmployee(timeCards, salaryOfHour);
+        final HourlyEmployee hourlyEmployee = new HourlyEmployee(employeeId, timeCards, salaryOfHour);
 
         // when
         Payroll payroll = hourlyEmployee.payroll(settlementPeriod);
 
         // then
         assertThat(payroll).isNotNull();
+        assertThat(payroll.getEmployeeId()).isEqualTo(employeeId);
         assertThat(payroll.getBeginDate()).isEqualTo(LocalDate.of(2019, 11, 4));
         assertThat(payroll.getEndDate()).isEqualTo(LocalDate.of(2019, 11, 8));
         assertThat(payroll.getAmount()).isEqualTo(Money.of(4000, Currency.RMB));
@@ -38,13 +40,14 @@ public class HourlyEmployeeTest {
     public void should_calculate_payroll_by_work_hours_with_overtime_in_a_week() {
         // given
         final List<TimeCard> timeCards = createTimeCards(9, 7, 10, 10, 8);
-        final HourlyEmployee hourlyEmployee = new HourlyEmployee(timeCards, salaryOfHour);
+        final HourlyEmployee hourlyEmployee = new HourlyEmployee(employeeId, timeCards, salaryOfHour);
 
         // when
         Payroll payroll = hourlyEmployee.payroll(settlementPeriod);
 
         // then
         assertThat(payroll).isNotNull();
+        assertThat(payroll.getEmployeeId()).isEqualTo(employeeId);
         assertThat(payroll.getBeginDate()).isEqualTo(LocalDate.of(2019, 11, 4));
         assertThat(payroll.getEndDate()).isEqualTo(LocalDate.of(2019, 11, 8));
         assertThat(payroll.getAmount()).isEqualTo(Money.of(4650, Currency.RMB));
@@ -53,26 +56,28 @@ public class HourlyEmployeeTest {
     @Test
     public void should_be_0_given_no_any_time_card() {
         // given
-        final HourlyEmployee hourlyEmployee = new HourlyEmployee(new ArrayList<>(), salaryOfHour);
+        final HourlyEmployee hourlyEmployee = new HourlyEmployee(employeeId, new ArrayList<>(), salaryOfHour);
 
         // when
         Payroll payroll = hourlyEmployee.payroll(settlementPeriod);
 
         // then
         assertThat(payroll).isNotNull();
+        assertThat(payroll.getEmployeeId()).isEqualTo(employeeId);
         assertThat(payroll.getAmount()).isEqualTo(Money.zero());
     }
 
     @Test
     public void should_be_0_given_null_time_card() {
         // given
-        final HourlyEmployee hourlyEmployee = new HourlyEmployee(null, salaryOfHour);
+        final HourlyEmployee hourlyEmployee = new HourlyEmployee(employeeId, null, salaryOfHour);
 
         // when
         Payroll payroll = hourlyEmployee.payroll(settlementPeriod);
 
         // then
         assertThat(payroll).isNotNull();
+        assertThat(payroll.getEmployeeId()).isEqualTo(employeeId);
         assertThat(payroll.getAmount()).isEqualTo(Money.zero());
     }
 
