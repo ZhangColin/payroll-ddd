@@ -34,6 +34,9 @@ public class Money {
         return new Money(value.multiply(factorDecimal).setScale(SCALE, BigDecimal.ROUND_HALF_UP), currency);
     }
 
+    public static Money of(double value) {
+        return new Money(value, Currency.RMB);
+    }
     public static Money of(double value, Currency currency) {
         return new Money(value, currency);
     }
