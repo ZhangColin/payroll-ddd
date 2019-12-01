@@ -19,7 +19,11 @@ public class Period {
     }
 
     public Period(YearMonth month) {
-        this.beginDate = month.atDay(1);
-        this.endDate = month.atDay(30);
+        this(month.getYear(), month.getMonthValue());
+    }
+
+    public Period(int year, int month) {
+        this(LocalDate.of(year, month, 1),
+                LocalDate.of(year, month, YearMonth.of(year, month).lengthOfMonth()));
     }
 }

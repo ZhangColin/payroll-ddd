@@ -14,6 +14,6 @@ public class SalariedEmployee {
     }
 
     public Payroll payroll(Period settlementPeriod) {
-        return null;
+        return new Payroll(employeeId, settlementPeriod.getBeginDate(), settlementPeriod.getEndDate(), salaryOfMonth);
     }
 }
