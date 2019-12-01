@@ -23,7 +23,7 @@ public enum LeaveReason {
     /**
      * 拒绝请假
      */
-    DISAPPROVED_LEAVE(0);
+    DISAPPROVED_LEAVE(1);
 
     private double deductionRation;
 

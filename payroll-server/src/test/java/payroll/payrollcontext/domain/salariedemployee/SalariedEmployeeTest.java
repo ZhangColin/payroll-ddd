@@ -66,6 +66,40 @@ public class SalariedEmployeeTest {
                 expectedAmount);
     }
 
+    @Test
+    public void should_deduct_salary_if_employee_ask_one_day_paid_leave() {
+        // given
+        final SalariedEmployee salariedEmployee = salariedEmployeeWithOnePaidLeaveOf(employeeId);
+
+        // when
+        final Payroll payroll = salariedEmployee.payroll(settlementPeriod);
+
+        // then
+        final Money expectedAmount = Money.of(10000.00);
+        assertPayroll(payroll,
+                employeeId,
+                LocalDate.of(2019, 11, 1),
+                LocalDate.of(2019, 11, 30),
+                expectedAmount);
+    }
+
+    @Test
+    public void should_deduct_salary_if_employee_ask_one_day_leave_which_is_disapproved() {
+        // given
+        final SalariedEmployee salariedEmployee = salariedEmployeeWithOneDisapprovedLeaveOf(employeeId);
+
+        // when
+        final Payroll payroll = salariedEmployee.payroll(settlementPeriod);
+
+        // then
+        final Money expectedAmount = Money.of(9545.46);
+        assertPayroll(payroll,
+                employeeId,
+                LocalDate.of(2019, 11, 1),
+                LocalDate.of(2019, 11, 30),
+                expectedAmount);
+    }
+
     private void assertPayroll(Payroll payroll, String employeeId, LocalDate beginDate, LocalDate endDate, Money payrollAmount) {
         assertThat(payroll).isNotNull();
         assertThat(payroll.getEmployeeId()).isEqualTo(employeeId);
