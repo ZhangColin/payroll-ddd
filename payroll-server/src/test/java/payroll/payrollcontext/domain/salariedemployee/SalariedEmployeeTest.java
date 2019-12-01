@@ -1,13 +1,15 @@
 package payroll.payrollcontext.domain.salariedemployee;
 
 import org.junit.Test;
+import payroll.payrollcontext.domain.Money;
 import payroll.payrollcontext.domain.Payroll;
 import payroll.payrollcontext.domain.Period;
-import payroll.payrollcontext.domain.Money;
 
 import java.time.LocalDate;
 import java.time.YearMonth;
+import java.util.List;
 
+import static java.util.Collections.singletonList;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class SalariedEmployeeTest {
@@ -24,10 +26,38 @@ public class SalariedEmployeeTest {
         final Payroll payroll = salariedEmployee.payroll(settlementPeriod);
 
         // then
+        assertPayroll(payroll,
+                employeeId,
+                LocalDate.of(2019, 11, 1),
+                LocalDate.of(2019, 11, 30),
+                salaryOfMonth);
+    }
+
+    @Test
+    public void should_deduct_salary_if_employee_ask_one_day_sick_leave() {
+        // given
+        Absence sickLeave = new Absence(employeeId, LocalDate.of(2019, 11, 4), LeaveReason.SickLeave);
+        final List<Absence> absences =  singletonList(sickLeave);
+
+        final SalariedEmployee salariedEmployee = new SalariedEmployee(employeeId, salaryOfMonth, absences);
+
+        // when
+        final Payroll payroll = salariedEmployee.payroll(settlementPeriod);
+
+        // then
+        final Money payrollAmount = Money.of(9772.72);
+        assertPayroll(payroll,
+                employeeId,
+                LocalDate.of(2019, 11, 1),
+                LocalDate.of(2019, 11, 30),
+                payrollAmount);
+    }
+
+    private void assertPayroll(Payroll payroll, String employeeId, LocalDate beginDate, LocalDate endDate, Money payrollAmount) {
         assertThat(payroll).isNotNull();
         assertThat(payroll.getEmployeeId()).isEqualTo(employeeId);
-        assertThat(payroll.getBeginDate()).isEqualTo(LocalDate.of(2019, 11, 1));
-        assertThat(payroll.getEndDate()).isEqualTo(LocalDate.of(2019, 11, 30));
-        assertThat(payroll.getAmount()).isEqualTo(salaryOfMonth);
+        assertThat(payroll.getBeginDate()).isEqualTo(beginDate);
+        assertThat(payroll.getEndDate()).isEqualTo(endDate);
+        assertThat(payroll.getAmount()).isEqualTo(payrollAmount);
     }
 }
