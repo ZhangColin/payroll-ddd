@@ -15,11 +15,11 @@ public class EmployeeFixture {
 
     public static HourlyEmployee hourlyEmployeeOf(String employeeId, int workHours1, int workHours2, int workHours3, int workHours4, int workHours5) {
         final List<TimeCard> timeCards = createTimeCards(workHours1, workHours2, workHours3, workHours4, workHours5);
-        return new HourlyEmployee(employeeId, timeCards, salaryOfHour);
+        return new HourlyEmployee(employeeId, salaryOfHour, timeCards);
     }
 
     public static HourlyEmployee hourlyEmployeeOf(String employeeId, List<TimeCard> timeCards) {
-        return new HourlyEmployee(employeeId, timeCards, salaryOfHour);
+        return new HourlyEmployee(employeeId, salaryOfHour, timeCards);
     }
 
     private static List<TimeCard> createTimeCards(int workHours1, int workHours2, int workHours3, int workHours4, int workHours5) {

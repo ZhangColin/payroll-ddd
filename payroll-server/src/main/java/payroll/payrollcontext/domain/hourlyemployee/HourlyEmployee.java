@@ -4,6 +4,7 @@ import payroll.payrollcontext.domain.Payroll;
 import payroll.payrollcontext.domain.Period;
 import payroll.payrollcontext.domain.Money;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -16,7 +17,11 @@ public class HourlyEmployee {
     private final List<TimeCard> timeCards;
     private final Money salaryOfHour;
 
-    public HourlyEmployee(String employeeId, List<TimeCard> timeCards, Money salaryOfHour) {
+    public HourlyEmployee(String employeeId, Money salaryOfHour) {
+        this(employeeId, salaryOfHour, new ArrayList<>());
+    }
+
+    public HourlyEmployee(String employeeId, Money salaryOfHour, List<TimeCard> timeCards) {
         this.employeeId = employeeId;
         this.timeCards = timeCards;
         this.salaryOfHour = salaryOfHour;
