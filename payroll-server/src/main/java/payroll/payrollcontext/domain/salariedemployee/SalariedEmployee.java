@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SalariedEmployee {
+    private static final int WORK_DAYS_OF_MONTH = 22;
     private String employeeId;
     private Money salaryOfMonth;
     private List<Absence> absences;
@@ -22,6 +23,12 @@ public class SalariedEmployee {
     }
 
     public Payroll payroll(Period settlementPeriod) {
-        return new Payroll(employeeId, settlementPeriod.getBeginDate(), settlementPeriod.getEndDate(), salaryOfMonth);
+        final Money salaryOfDay = salaryOfMonth.divide(WORK_DAYS_OF_MONTH);
+
+        final Money deduction = absences.stream()
+                .filter(absence -> !absence.isPaidLeave())
+                .map(absence -> salaryOfDay.multiply(absence.deductionRation()))
+                .reduce(Money.zero(), (m, total) -> total.add(m));
+        return new Payroll(employeeId, settlementPeriod.getBeginDate(), settlementPeriod.getEndDate(), salaryOfMonth.subtract(deduction));
     }
 }

@@ -36,7 +36,7 @@ public class SalariedEmployeeTest {
     @Test
     public void should_deduct_salary_if_employee_ask_one_day_sick_leave() {
         // given
-        Absence sickLeave = new Absence(employeeId, LocalDate.of(2019, 11, 4), LeaveReason.SickLeave);
+        Absence sickLeave = new Absence(employeeId, LocalDate.of(2019, 11, 4), LeaveReason.SICK_LEAVE);
         final List<Absence> absences =  singletonList(sickLeave);
 
         final SalariedEmployee salariedEmployee = new SalariedEmployee(employeeId, salaryOfMonth, absences);
@@ -45,7 +45,7 @@ public class SalariedEmployeeTest {
         final Payroll payroll = salariedEmployee.payroll(settlementPeriod);
 
         // then
-        final Money payrollAmount = Money.of(9772.72);
+        final Money payrollAmount = Money.of(9772.73);
         assertPayroll(payroll,
                 employeeId,
                 LocalDate.of(2019, 11, 1),
