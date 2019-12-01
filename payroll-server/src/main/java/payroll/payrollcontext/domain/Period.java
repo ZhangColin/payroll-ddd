@@ -1,4 +1,4 @@
-package payroll.domain;
+package payroll.payrollcontext.domain;
 
 import lombok.Getter;
 
@@ -8,7 +8,7 @@ import java.time.LocalDate;
  * @author colin
  */
 @Getter
-class Period {
+public class Period {
     private final LocalDate beginDate;
     private final LocalDate endDate;
 

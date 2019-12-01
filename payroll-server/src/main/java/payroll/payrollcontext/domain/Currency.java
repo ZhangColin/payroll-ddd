@@ -1,4 +1,4 @@
-package payroll.domain;
+package payroll.payrollcontext.domain;
 
 
 /**

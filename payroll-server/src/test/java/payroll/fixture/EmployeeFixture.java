@@ -1,6 +1,9 @@
 package payroll.fixture;
 
-import payroll.domain.*;
+import payroll.payrollcontext.domain.Currency;
+import payroll.payrollcontext.domain.Money;
+import payroll.payrollcontext.domain.hourlyemployee.HourlyEmployee;
+import payroll.payrollcontext.domain.hourlyemployee.TimeCard;
 
 import java.time.LocalDate;
 import java.util.List;

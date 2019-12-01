@@ -1,4 +1,6 @@
-package payroll.domain;
+package payroll.payrollcontext.domain.hourlyemployee;
+
+import payroll.payrollcontext.domain.Period;
 
 import java.util.List;
 

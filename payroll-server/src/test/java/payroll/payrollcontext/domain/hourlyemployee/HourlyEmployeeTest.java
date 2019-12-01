@@ -1,6 +1,10 @@
-package payroll.domain;
+package payroll.payrollcontext.domain.hourlyemployee;
 
 import org.junit.Test;
+import payroll.payrollcontext.domain.Currency;
+import payroll.payrollcontext.domain.Money;
+import payroll.payrollcontext.domain.Payroll;
+import payroll.payrollcontext.domain.Period;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
