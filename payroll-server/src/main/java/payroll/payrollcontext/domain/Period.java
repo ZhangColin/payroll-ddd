@@ -1,6 +1,7 @@
 package payroll.payrollcontext.domain;
 
 import lombok.Getter;
+import payroll.payrollcontext.domain.exceptions.InvalidDateException;
 
 import java.time.LocalDate;
 import java.time.YearMonth;
@@ -23,7 +24,11 @@ public class Period {
     }
 
     public Period(int year, int month) {
-        this(LocalDate.of(year, month, 1),
-                LocalDate.of(year, month, YearMonth.of(year, month).lengthOfMonth()));
+        if (month < 1 || month > 12) {
+            throw new InvalidDateException("Invalid month value.");
+        }
+
+        this.beginDate = LocalDate.of(year, month, 1);
+        this.endDate = LocalDate.of(year, month, YearMonth.of(year, month).lengthOfMonth());
     }
 }

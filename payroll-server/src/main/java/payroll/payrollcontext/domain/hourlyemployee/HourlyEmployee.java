@@ -1,8 +1,8 @@
 package payroll.payrollcontext.domain.hourlyemployee;
 
-import payroll.payrollcontext.domain.Money;
 import payroll.payrollcontext.domain.Payroll;
 import payroll.payrollcontext.domain.Period;
+import payroll.payrollcontext.domain.Money;
 
 import java.util.List;
 import java.util.Objects;

@@ -1,9 +1,9 @@
 package payroll.payrollcontext.domain.salariedemployee;
 
 import org.junit.Test;
-import payroll.payrollcontext.domain.Money;
 import payroll.payrollcontext.domain.Payroll;
 import payroll.payrollcontext.domain.Period;
+import payroll.payrollcontext.domain.Money;
 
 import java.time.LocalDate;
 import java.time.YearMonth;
