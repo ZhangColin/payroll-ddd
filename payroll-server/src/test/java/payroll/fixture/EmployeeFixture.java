@@ -66,6 +66,15 @@ public class EmployeeFixture {
         return createSalariedEmployeeWithAbsences(employeeId, disapprovedLeave);
     }
 
+    public static SalariedEmployee salariedEmployeeWithManyLeavesOf(String employeeId) {
+        Absence sickLeave = new Absence(employeeId, LocalDate.of(2019, 11, 4), LeaveReason.SICK_LEAVE);
+        Absence casualLeave = new Absence(employeeId, LocalDate.of(2019, 11, 5), LeaveReason.CASUAL_LEAVE);
+        Absence paidLeave = new Absence(employeeId, LocalDate.of(2019, 11, 6), LeaveReason.MATERNITY_LEAVE);
+        Absence disapprovedLeave = new Absence(employeeId, LocalDate.of(2019, 11, 7), LeaveReason.DISAPPROVED_LEAVE);
+
+        return createSalariedEmployeeWithAbsences(employeeId, sickLeave, casualLeave, paidLeave, disapprovedLeave);
+    }
+
     private static SalariedEmployee createSalariedEmployeeWithAbsences(String employeeId, Absence... leaves) {
         return new SalariedEmployee(employeeId, salaryOfMonth, new ArrayList<>(asList(leaves)));
     }
