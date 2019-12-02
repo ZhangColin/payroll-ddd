@@ -1,0 +1,12 @@
+server:
+  port: 8080
+#  servlet:
+#    context-path: /ekin
+
+spring:
+  application:
+    name: payroll
+  profiles:
+    include: web, mysql
+    active: dev
+
