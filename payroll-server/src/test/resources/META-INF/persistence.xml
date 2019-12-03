@@ -10,6 +10,7 @@
         <class>payroll.employeeontext.domain.Employee</class>
         <class>payroll.payrollcontext.domain.hourlyemployee.HourlyEmployee</class>
         <class>payroll.payrollcontext.domain.hourlyemployee.TimeCard</class>
+        <class>payroll.payrollcontext.domain.salariedemployee.SalariedEmployee</class>
 
         <properties>
             <property name="hibernate.connection.driver_class" value="com.mysql.cj.jdbc.Driver"/>

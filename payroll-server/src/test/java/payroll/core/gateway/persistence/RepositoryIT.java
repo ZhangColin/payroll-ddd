@@ -5,9 +5,11 @@ import payroll.employeeontext.domain.Address;
 import payroll.employeeontext.domain.Contact;
 import payroll.employeeontext.domain.Employee;
 import payroll.employeeontext.domain.EmployeeId;
-import payroll.payrollcontext.domain.Money;
+import payroll.payrollcontext.domain.Salary;
 import payroll.payrollcontext.domain.hourlyemployee.HourlyEmployee;
 import payroll.payrollcontext.domain.hourlyemployee.TimeCard;
+import payroll.payrollcontext.domain.salariedemployee.Absence;
+import payroll.payrollcontext.domain.salariedemployee.SalariedEmployee;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -58,7 +60,7 @@ public class RepositoryIT {
 
         final HourlyEmployee employee = optionalEmployee.get();
         assertThat(employee.id().value()).isEqualTo(employeeId);
-        assertThat(employee.getSalaryOfHour()).isEqualTo(Money.of(100));
+        assertThat(employee.getSalaryOfHour()).isEqualTo(Salary.of(100));
 
         final List<TimeCard> timeCards = employee.getTimeCards();
         assertThat(timeCards).isNotNull().hasSize(5);
@@ -68,5 +70,29 @@ public class RepositoryIT {
         assertThat(timeCard.getRegularWorkHours()).isEqualTo(8);
         assertThat(timeCard.getOvertimeWorkHours()).isEqualTo(0);
         assertThat(timeCard.isOvertime()).isFalse();
+    }
+
+    @Test
+    public void should_query_salaried_employee_and_related_absences_by_id() {
+        // given
+        final String employeeId = "emp201110101000003";
+        final Repository<SalariedEmployee, EmployeeId> employeeIdRepository =
+                new Repository<>(SalariedEmployee.class, EntityManagers.from("PAYROLL_JPA"));
+
+        // when
+        final Optional<SalariedEmployee> optionalEmployee = employeeIdRepository.findById(EmployeeId.of(employeeId));
+
+        // then
+        assertThat(optionalEmployee.isPresent()).isTrue();
+
+        final SalariedEmployee employee = optionalEmployee.get();
+        assertThat(employee.id().value()).isEqualTo(employeeId);
+        assertThat(employee.getSalaryOfMonth()).isEqualTo(Salary.of(10000.00));
+
+        final List<Absence> absences = employee.getAbsences();
+        assertThat(absences).isNotNull().hasSize(4);
+
+        final Absence absence = absences.get(0);
+        assertThat(absence.isPaidLeave()).isFalse();
     }
 }

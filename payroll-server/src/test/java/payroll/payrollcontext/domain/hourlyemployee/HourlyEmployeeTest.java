@@ -2,7 +2,7 @@ package payroll.payrollcontext.domain.hourlyemployee;
 
 import org.junit.Test;
 import payroll.payrollcontext.domain.Currency;
-import payroll.payrollcontext.domain.Money;
+import payroll.payrollcontext.domain.Salary;
 import payroll.payrollcontext.domain.Payroll;
 import payroll.payrollcontext.domain.Period;
 
@@ -34,7 +34,7 @@ public class HourlyEmployeeTest {
         assertThat(payroll.getEmployeeId().value()).isEqualTo(employeeId);
         assertThat(payroll.getBeginDate()).isEqualTo(LocalDate.of(2019, 11, 4));
         assertThat(payroll.getEndDate()).isEqualTo(LocalDate.of(2019, 11, 8));
-        assertThat(payroll.getAmount()).isEqualTo(Money.of(4000, Currency.RMB));
+        assertThat(payroll.getAmount()).isEqualTo(Salary.of(4000, Currency.RMB));
     }
 
     @Test
@@ -50,7 +50,7 @@ public class HourlyEmployeeTest {
         assertThat(payroll.getEmployeeId().value()).isEqualTo(employeeId);
         assertThat(payroll.getBeginDate()).isEqualTo(LocalDate.of(2019, 11, 4));
         assertThat(payroll.getEndDate()).isEqualTo(LocalDate.of(2019, 11, 8));
-        assertThat(payroll.getAmount()).isEqualTo(Money.of(4650, Currency.RMB));
+        assertThat(payroll.getAmount()).isEqualTo(Salary.of(4650, Currency.RMB));
     }
 
     @Test
@@ -64,7 +64,7 @@ public class HourlyEmployeeTest {
         // then
         assertThat(payroll).isNotNull();
         assertThat(payroll.getEmployeeId().value()).isEqualTo(employeeId);
-        assertThat(payroll.getAmount()).isEqualTo(Money.zero());
+        assertThat(payroll.getAmount()).isEqualTo(Salary.zero());
     }
 
     @Test
@@ -78,7 +78,7 @@ public class HourlyEmployeeTest {
         // then
         assertThat(payroll).isNotNull();
         assertThat(payroll.getEmployeeId().value()).isEqualTo(employeeId);
-        assertThat(payroll.getAmount()).isEqualTo(Money.zero());
+        assertThat(payroll.getAmount()).isEqualTo(Salary.zero());
     }
 
 }

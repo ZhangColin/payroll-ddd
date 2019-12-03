@@ -13,9 +13,9 @@ public class Payroll {
     private final EmployeeId employeeId;
     private final LocalDate beginDate;
     private final LocalDate endDate;
-    private final Money amount;
+    private final Salary amount;
 
-    public Payroll(EmployeeId employeeId, LocalDate beginDate, LocalDate endDate, Money amount) {
+    public Payroll(EmployeeId employeeId, LocalDate beginDate, LocalDate endDate, Salary amount) {
         this.employeeId = employeeId;
         this.beginDate = beginDate;
         this.endDate = endDate;

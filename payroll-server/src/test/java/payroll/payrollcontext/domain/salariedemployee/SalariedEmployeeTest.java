@@ -1,7 +1,7 @@
 package payroll.payrollcontext.domain.salariedemployee;
 
 import org.junit.Test;
-import payroll.payrollcontext.domain.Money;
+import payroll.payrollcontext.domain.Salary;
 import payroll.payrollcontext.domain.Payroll;
 import payroll.payrollcontext.domain.Period;
 
@@ -14,7 +14,7 @@ import static payroll.fixture.EmployeeFixture.*;
 public class SalariedEmployeeTest {
     private final Period settlementPeriod = new Period(YearMonth.of(2019, 11));
     private final String employeeId = "emp200901011111";
-    private final Money salaryOfMonth = Money.of(10000.00);
+    private final Salary salaryOfMonth = Salary.of(10000.00);
 
     @Test
     public void should_return_monthly_salary_if_employee_without_absence() {
@@ -41,7 +41,7 @@ public class SalariedEmployeeTest {
         final Payroll payroll = salariedEmployee.payroll(settlementPeriod);
 
         // then
-        final Money expectedAmount = Money.of(9772.73);
+        final Salary expectedAmount = Salary.of(9772.73);
         assertPayroll(payroll,
                 employeeId,
                 LocalDate.of(2019, 11, 1),
@@ -58,7 +58,7 @@ public class SalariedEmployeeTest {
         final Payroll payroll = salariedEmployee.payroll(settlementPeriod);
 
         // then
-        final Money expectedAmount = Money.of(9772.73);
+        final Salary expectedAmount = Salary.of(9772.73);
         assertPayroll(payroll,
                 employeeId,
                 LocalDate.of(2019, 11, 1),
@@ -75,7 +75,7 @@ public class SalariedEmployeeTest {
         final Payroll payroll = salariedEmployee.payroll(settlementPeriod);
 
         // then
-        final Money expectedAmount = Money.of(10000.00);
+        final Salary expectedAmount = Salary.of(10000.00);
         assertPayroll(payroll,
                 employeeId,
                 LocalDate.of(2019, 11, 1),
@@ -92,7 +92,7 @@ public class SalariedEmployeeTest {
         final Payroll payroll = salariedEmployee.payroll(settlementPeriod);
 
         // then
-        final Money expectedAmount = Money.of(9545.46);
+        final Salary expectedAmount = Salary.of(9545.46);
         assertPayroll(payroll,
                 employeeId,
                 LocalDate.of(2019, 11, 1),
@@ -109,7 +109,7 @@ public class SalariedEmployeeTest {
         final Payroll payroll = salariedEmployee.payroll(settlementPeriod);
 
         // then
-        final Money expectedAmount = Money.of(9090.92);
+        final Salary expectedAmount = Salary.of(9090.92);
         assertPayroll(payroll,
                 employeeId,
                 LocalDate.of(2019, 11, 1),
@@ -117,7 +117,7 @@ public class SalariedEmployeeTest {
                 expectedAmount);
     }
 
-    private void assertPayroll(Payroll payroll, String employeeId, LocalDate beginDate, LocalDate endDate, Money payrollAmount) {
+    private void assertPayroll(Payroll payroll, String employeeId, LocalDate beginDate, LocalDate endDate, Salary payrollAmount) {
         assertThat(payroll).isNotNull();
         assertThat(payroll.getEmployeeId().value()).isEqualTo(employeeId);
         assertThat(payroll.getBeginDate()).isEqualTo(beginDate);

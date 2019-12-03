@@ -3,7 +3,7 @@ package payroll.payrollcontext.domain.hourlyemployee;
 import org.junit.Before;
 import org.junit.Test;
 import payroll.payrollcontext.domain.Currency;
-import payroll.payrollcontext.domain.Money;
+import payroll.payrollcontext.domain.Salary;
 import payroll.payrollcontext.domain.Payroll;
 import payroll.payrollcontext.domain.Period;
 
@@ -92,6 +92,6 @@ public class HourlyEmployeePayrollCalculatorTest {
         assertThat(payroll.getEmployeeId().value()).isEqualTo(employeeId);
         assertThat(payroll.getBeginDate()).isEqualTo(LocalDate.of(2019, 11, 4));
         assertThat(payroll.getEndDate()).isEqualTo(LocalDate.of(2019, 11, 8));
-        assertThat(payroll.getAmount()).isEqualTo(Money.of(payrollAmount, Currency.RMB));
+        assertThat(payroll.getAmount()).isEqualTo(Salary.of(payrollAmount, Currency.RMB));
     }
 }

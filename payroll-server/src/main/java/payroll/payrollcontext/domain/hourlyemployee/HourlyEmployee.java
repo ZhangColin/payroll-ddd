@@ -4,7 +4,7 @@ import lombok.Getter;
 import payroll.core.domain.AbstractEntity;
 import payroll.core.domain.AggregateRoot;
 import payroll.employeeontext.domain.EmployeeId;
-import payroll.payrollcontext.domain.Money;
+import payroll.payrollcontext.domain.Salary;
 import payroll.payrollcontext.domain.Payroll;
 import payroll.payrollcontext.domain.Period;
 
@@ -26,7 +26,7 @@ public class HourlyEmployee extends AbstractEntity<EmployeeId> implements Aggreg
     private EmployeeId employeeId;
 
     @Embedded
-    private Money salaryOfHour;
+    private Salary salaryOfHour;
 
     @OneToMany
     @JoinColumn(name = "employeeId", nullable = false)
@@ -36,11 +36,11 @@ public class HourlyEmployee extends AbstractEntity<EmployeeId> implements Aggreg
 
     }
 
-    public HourlyEmployee(EmployeeId employeeId, Money salaryOfHour) {
+    public HourlyEmployee(EmployeeId employeeId, Salary salaryOfHour) {
         this(employeeId, salaryOfHour, new ArrayList<>());
     }
 
-    public HourlyEmployee(EmployeeId employeeId, Money salaryOfHour, List<TimeCard> timeCards) {
+    public HourlyEmployee(EmployeeId employeeId, Salary salaryOfHour, List<TimeCard> timeCards) {
         this.employeeId = employeeId;
         this.timeCards = timeCards;
         this.salaryOfHour = salaryOfHour;
@@ -48,11 +48,11 @@ public class HourlyEmployee extends AbstractEntity<EmployeeId> implements Aggreg
 
     public Payroll payroll(Period period) {
         if (Objects.isNull(timeCards) || timeCards.isEmpty()) {
-            return new Payroll(employeeId, period.getBeginDate(), period.getEndDate(), Money.zero());
+            return new Payroll(employeeId, period.getBeginDate(), period.getEndDate(), Salary.zero());
         }
-        final Money regularSalary = calculateRegularSalary();
-        final Money overtimeSalary = calculateOvertimeSalary();
-        final Money totalSalary = regularSalary.add(overtimeSalary);
+        final Salary regularSalary = calculateRegularSalary();
+        final Salary overtimeSalary = calculateOvertimeSalary();
+        final Salary totalSalary = regularSalary.add(overtimeSalary);
 
         return new Payroll(
                 employeeId, period.getBeginDate(),
@@ -60,7 +60,7 @@ public class HourlyEmployee extends AbstractEntity<EmployeeId> implements Aggreg
                 totalSalary);
     }
 
-    private Money calculateOvertimeSalary() {
+    private Salary calculateOvertimeSalary() {
         final int overtimeHours = timeCards.stream()
                 .filter(TimeCard::isOvertime)
                 .map(TimeCard::getOvertimeWorkHours)
@@ -68,7 +68,7 @@ public class HourlyEmployee extends AbstractEntity<EmployeeId> implements Aggreg
         return salaryOfHour.multiply(OVERTIME_FACTOR).multiply(overtimeHours);
     }
 
-    private Money calculateRegularSalary() {
+    private Salary calculateRegularSalary() {
         final int regularHours = timeCards.stream()
                 .map(TimeCard::getRegularWorkHours)
                 .reduce(0, Integer::sum);
