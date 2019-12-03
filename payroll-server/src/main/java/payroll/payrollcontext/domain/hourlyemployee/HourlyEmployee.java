@@ -1,6 +1,7 @@
 package payroll.payrollcontext.domain.hourlyemployee;
 
 import lombok.Getter;
+import org.hibernate.annotations.DiscriminatorOptions;
 import payroll.core.domain.AbstractEntity;
 import payroll.core.domain.AggregateRoot;
 import payroll.employeeontext.domain.EmployeeId;
@@ -18,6 +19,9 @@ import java.util.Objects;
  */
 @Entity
 @Table(name = "employees")
+@DiscriminatorColumn(name = "employeeType", discriminatorType = DiscriminatorType.INTEGER)
+@DiscriminatorOptions(force = true)
+@DiscriminatorValue(value = "0")
 @Getter
 public class HourlyEmployee extends AbstractEntity<EmployeeId> implements AggregateRoot<HourlyEmployee> {
     public static final double OVERTIME_FACTOR = 1.5;

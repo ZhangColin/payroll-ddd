@@ -102,7 +102,7 @@ public class RepositoryIT {
     }
 
     @Test
-    public void should_get_all_entities() {
+    public void should_get_all_employees() {
         // given
         final Repository<Employee, EmployeeId> employeeRepository = createEmployeeRepository();
 
@@ -114,7 +114,31 @@ public class RepositoryIT {
     }
 
     @Test
-    public void should_get_all_entities_by_criteria() {
+    public void should_get_all_hourly_employees() {
+        // given
+        final Repository<HourlyEmployee, EmployeeId> employeeRepository = createHourlyEmployeeRepository();
+
+        // when
+        final List<HourlyEmployee> employees = employeeRepository.findAll();
+
+        // then
+        assertThat(employees).isNotNull().hasSize(2);
+    }
+
+    @Test
+    public void should_get_all_salaried_employees() {
+        // given
+        final Repository<SalariedEmployee, EmployeeId> employeeRepository = createSalariedEmployeeRepository();
+
+        // when
+        final List<SalariedEmployee> employees = employeeRepository.findAll();
+
+        // then
+        assertThat(employees).isNotNull().hasSize(1);
+    }
+
+    @Test
+    public void should_get_all_entities_by_employee_type() {
         final Repository<Employee, EmployeeId> employeeRepository = createEmployeeRepository();
 
         final List<Employee> hourlyEmployees = employeeRepository

@@ -1,6 +1,7 @@
 package payroll.payrollcontext.domain.salariedemployee;
 
 import lombok.Getter;
+import org.hibernate.annotations.DiscriminatorOptions;
 import payroll.core.domain.AbstractEntity;
 import payroll.core.domain.AggregateRoot;
 import payroll.employeeontext.domain.EmployeeId;
@@ -14,6 +15,9 @@ import java.util.List;
 
 @Entity
 @Table(name = "employees")
+@DiscriminatorColumn(name = "employeeType", discriminatorType = DiscriminatorType.INTEGER)
+@DiscriminatorOptions(force = true)
+@DiscriminatorValue(value = "1")
 @Getter
 public class SalariedEmployee extends AbstractEntity<EmployeeId> implements AggregateRoot<SalariedEmployee> {
     private static final int WORK_DAYS_OF_MONTH = 22;
