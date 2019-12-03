@@ -1,5 +1,6 @@
 package payroll.fixture;
 
+import payroll.employeeontext.domain.EmployeeId;
 import payroll.payrollcontext.domain.Currency;
 import payroll.payrollcontext.domain.Money;
 import payroll.payrollcontext.domain.hourlyemployee.HourlyEmployee;
@@ -21,11 +22,11 @@ public class EmployeeFixture {
 
     public static HourlyEmployee hourlyEmployeeOf(String employeeId, int workHours1, int workHours2, int workHours3, int workHours4, int workHours5) {
         final List<TimeCard> timeCards = createTimeCards(workHours1, workHours2, workHours3, workHours4, workHours5);
-        return new HourlyEmployee(employeeId, salaryOfHour, timeCards);
+        return new HourlyEmployee(EmployeeId.of(employeeId), salaryOfHour, timeCards);
     }
 
     public static HourlyEmployee hourlyEmployeeOf(String employeeId, List<TimeCard> timeCards) {
-        return new HourlyEmployee(employeeId, salaryOfHour, timeCards);
+        return new HourlyEmployee(EmployeeId.of(employeeId), salaryOfHour, timeCards);
     }
 
     private static List<TimeCard> createTimeCards(int workHours1, int workHours2, int workHours3, int workHours4, int workHours5) {
@@ -39,7 +40,7 @@ public class EmployeeFixture {
     }
 
     public static SalariedEmployee salariedEmployeeOf(String employeeId) {
-        return new SalariedEmployee(employeeId, salaryOfMonth);
+        return new SalariedEmployee(EmployeeId.of(employeeId), salaryOfMonth);
     }
 
     public static SalariedEmployee salariedEmployeeWithOneSickLeaveOf(String employeeId) {
@@ -76,6 +77,6 @@ public class EmployeeFixture {
     }
 
     private static SalariedEmployee createSalariedEmployeeWithAbsences(String employeeId, Absence... leaves) {
-        return new SalariedEmployee(employeeId, salaryOfMonth, new ArrayList<>(asList(leaves)));
+        return new SalariedEmployee(EmployeeId.of(employeeId), salaryOfMonth, new ArrayList<>(asList(leaves)));
     }
 }

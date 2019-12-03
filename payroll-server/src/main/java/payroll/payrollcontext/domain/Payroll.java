@@ -1,6 +1,7 @@
 package payroll.payrollcontext.domain;
 
 import lombok.Getter;
+import payroll.employeeontext.domain.EmployeeId;
 
 import java.time.LocalDate;
 
@@ -9,12 +10,12 @@ import java.time.LocalDate;
  */
 @Getter
 public class Payroll {
-    private final String employeeId;
+    private final EmployeeId employeeId;
     private final LocalDate beginDate;
     private final LocalDate endDate;
     private final Money amount;
 
-    public Payroll(String employeeId, LocalDate beginDate, LocalDate endDate, Money amount) {
+    public Payroll(EmployeeId employeeId, LocalDate beginDate, LocalDate endDate, Money amount) {
         this.employeeId = employeeId;
         this.beginDate = beginDate;
         this.endDate = endDate;

@@ -1,5 +1,6 @@
 package payroll.payrollcontext.domain.salariedemployee;
 
+import payroll.employeeontext.domain.EmployeeId;
 import payroll.payrollcontext.domain.Money;
 import payroll.payrollcontext.domain.Payroll;
 import payroll.payrollcontext.domain.Period;
@@ -9,14 +10,14 @@ import java.util.List;
 
 public class SalariedEmployee {
     private static final int WORK_DAYS_OF_MONTH = 22;
-    private String employeeId;
+    private EmployeeId employeeId;
     private Money salaryOfMonth;
     private List<Absence> absences;
 
-    public SalariedEmployee(String employeeId, Money salaryOfMonth) {
+    public SalariedEmployee(EmployeeId employeeId, Money salaryOfMonth) {
         this(employeeId, salaryOfMonth, new ArrayList<>());
     }
-    public SalariedEmployee(String employeeId, Money salaryOfMonth, List<Absence> absences) {
+    public SalariedEmployee(EmployeeId employeeId, Money salaryOfMonth, List<Absence> absences) {
         this.employeeId = employeeId;
         this.salaryOfMonth = salaryOfMonth;
         this.absences = absences;

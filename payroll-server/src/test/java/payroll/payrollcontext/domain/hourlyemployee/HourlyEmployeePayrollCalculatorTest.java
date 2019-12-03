@@ -89,7 +89,7 @@ public class HourlyEmployeePayrollCalculatorTest {
 
     private void assertPayroll(String employeeId, List<Payroll> payrolls, int index, int payrollAmount) {
         final Payroll payroll = payrolls.get(index);
-        assertThat(payroll.getEmployeeId()).isEqualTo(employeeId);
+        assertThat(payroll.getEmployeeId().value()).isEqualTo(employeeId);
         assertThat(payroll.getBeginDate()).isEqualTo(LocalDate.of(2019, 11, 4));
         assertThat(payroll.getEndDate()).isEqualTo(LocalDate.of(2019, 11, 8));
         assertThat(payroll.getAmount()).isEqualTo(Money.of(payrollAmount, Currency.RMB));

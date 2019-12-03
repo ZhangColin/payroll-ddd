@@ -2,6 +2,10 @@ package payroll.payrollcontext.domain;
 
 import payroll.payrollcontext.domain.exceptions.NotSameCurrencyException;
 
+import javax.persistence.Column;
+import javax.persistence.Embeddable;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.Objects;
@@ -9,11 +13,15 @@ import java.util.Objects;
 /**
  * @author colin
  */
+@Embeddable
 public class Money {
     public static final int SCALE = 2;
 
-    private final BigDecimal value;
-    private final Currency currency;
+    @Column(name = "salary")
+    private BigDecimal value;
+    @Column(name = "currency")
+    @Enumerated(EnumType.STRING)
+    private Currency currency;
 
     public static Money of(double value) {
         return new Money(value, Currency.RMB);
@@ -21,6 +29,10 @@ public class Money {
 
     public static Money of(double value, Currency currency) {
         return new Money(value, currency);
+    }
+
+    private Money() {
+
     }
 
     private Money(double value, Currency currency) {

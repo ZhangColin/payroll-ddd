@@ -1,9 +1,14 @@
 package payroll.payrollcontext.domain.hourlyemployee;
 
+import lombok.Getter;
+import payroll.core.domain.AbstractEntity;
+import payroll.core.domain.AggregateRoot;
+import payroll.employeeontext.domain.EmployeeId;
+import payroll.payrollcontext.domain.Money;
 import payroll.payrollcontext.domain.Payroll;
 import payroll.payrollcontext.domain.Period;
-import payroll.payrollcontext.domain.Money;
 
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -11,17 +16,31 @@ import java.util.Objects;
 /**
  * @author colin
  */
-public class HourlyEmployee {
+@Entity
+@Table(name = "employees")
+@Getter
+public class HourlyEmployee extends AbstractEntity<EmployeeId> implements AggregateRoot<HourlyEmployee> {
     public static final double OVERTIME_FACTOR = 1.5;
-    private String employeeId;
-    private final List<TimeCard> timeCards;
-    private final Money salaryOfHour;
 
-    public HourlyEmployee(String employeeId, Money salaryOfHour) {
+    @EmbeddedId
+    private EmployeeId employeeId;
+
+    @Embedded
+    private Money salaryOfHour;
+
+    @OneToMany
+    @JoinColumn(name = "employeeId", nullable = false)
+    private List<TimeCard> timeCards = new ArrayList<>();
+
+    private HourlyEmployee() {
+
+    }
+
+    public HourlyEmployee(EmployeeId employeeId, Money salaryOfHour) {
         this(employeeId, salaryOfHour, new ArrayList<>());
     }
 
-    public HourlyEmployee(String employeeId, Money salaryOfHour, List<TimeCard> timeCards) {
+    public HourlyEmployee(EmployeeId employeeId, Money salaryOfHour, List<TimeCard> timeCards) {
         this.employeeId = employeeId;
         this.timeCards = timeCards;
         this.salaryOfHour = salaryOfHour;
@@ -56,4 +75,13 @@ public class HourlyEmployee {
         return salaryOfHour.multiply(regularHours);
     }
 
+    @Override
+    public EmployeeId id() {
+        return this.employeeId;
+    }
+
+    @Override
+    public HourlyEmployee root() {
+        return this;
+    }
 }

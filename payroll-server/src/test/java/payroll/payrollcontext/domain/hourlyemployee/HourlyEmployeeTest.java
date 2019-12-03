@@ -31,7 +31,7 @@ public class HourlyEmployeeTest {
 
         // then
         assertThat(payroll).isNotNull();
-        assertThat(payroll.getEmployeeId()).isEqualTo(employeeId);
+        assertThat(payroll.getEmployeeId().value()).isEqualTo(employeeId);
         assertThat(payroll.getBeginDate()).isEqualTo(LocalDate.of(2019, 11, 4));
         assertThat(payroll.getEndDate()).isEqualTo(LocalDate.of(2019, 11, 8));
         assertThat(payroll.getAmount()).isEqualTo(Money.of(4000, Currency.RMB));
@@ -47,7 +47,7 @@ public class HourlyEmployeeTest {
 
         // then
         assertThat(payroll).isNotNull();
-        assertThat(payroll.getEmployeeId()).isEqualTo(employeeId);
+        assertThat(payroll.getEmployeeId().value()).isEqualTo(employeeId);
         assertThat(payroll.getBeginDate()).isEqualTo(LocalDate.of(2019, 11, 4));
         assertThat(payroll.getEndDate()).isEqualTo(LocalDate.of(2019, 11, 8));
         assertThat(payroll.getAmount()).isEqualTo(Money.of(4650, Currency.RMB));
@@ -63,7 +63,7 @@ public class HourlyEmployeeTest {
 
         // then
         assertThat(payroll).isNotNull();
-        assertThat(payroll.getEmployeeId()).isEqualTo(employeeId);
+        assertThat(payroll.getEmployeeId().value()).isEqualTo(employeeId);
         assertThat(payroll.getAmount()).isEqualTo(Money.zero());
     }
 
@@ -77,7 +77,7 @@ public class HourlyEmployeeTest {
 
         // then
         assertThat(payroll).isNotNull();
-        assertThat(payroll.getEmployeeId()).isEqualTo(employeeId);
+        assertThat(payroll.getEmployeeId().value()).isEqualTo(employeeId);
         assertThat(payroll.getAmount()).isEqualTo(Money.zero());
     }
 
