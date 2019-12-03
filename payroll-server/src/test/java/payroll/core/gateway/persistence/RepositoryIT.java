@@ -19,15 +19,17 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 
 public class RepositoryIT {
+
+    public static final String PERSISTENCE_UNIT_NAME = "PAYROLL_JPA";
+
     @Test
     public void try_run_integration_test_only() {
         // given
         final String employeeId = "emp200109101000001";
-        final Repository<Employee, EmployeeId> employeeIdRepository =
-                new Repository<>(Employee.class, EntityManagers.from("PAYROLL_JPA"));
+        final Repository<Employee, EmployeeId> employeeRepository = createEmployeeRepository();
 
         // when
-        final Optional<Employee> optionalEmployee = employeeIdRepository.findById(EmployeeId.of(employeeId));
+        final Optional<Employee> optionalEmployee = employeeRepository.findById(EmployeeId.of(employeeId));
 
         // then
         assertThat(optionalEmployee.isPresent()).isTrue();
@@ -49,11 +51,10 @@ public class RepositoryIT {
     public void should_query_hourly_employee_and_related_timecards_by_id() {
         // given
         final String employeeId = "emp200109101000001";
-        final Repository<HourlyEmployee, EmployeeId> employeeIdRepository =
-                new Repository<>(HourlyEmployee.class, EntityManagers.from("PAYROLL_JPA"));
+        final Repository<HourlyEmployee, EmployeeId> employeeRepository = createHourlyEmployeeRepository();
 
         // when
-        final Optional<HourlyEmployee> optionalEmployee = employeeIdRepository.findById(EmployeeId.of(employeeId));
+        final Optional<HourlyEmployee> optionalEmployee = employeeRepository.findById(EmployeeId.of(employeeId));
 
         // then
         assertThat(optionalEmployee.isPresent()).isTrue();
@@ -76,11 +77,10 @@ public class RepositoryIT {
     public void should_query_salaried_employee_and_related_absences_by_id() {
         // given
         final String employeeId = "emp201110101000003";
-        final Repository<SalariedEmployee, EmployeeId> employeeIdRepository =
-                new Repository<>(SalariedEmployee.class, EntityManagers.from("PAYROLL_JPA"));
+        final Repository<SalariedEmployee, EmployeeId> employeeRepository = createSalariedEmployeeRepository();
 
         // when
-        final Optional<SalariedEmployee> optionalEmployee = employeeIdRepository.findById(EmployeeId.of(employeeId));
+        final Optional<SalariedEmployee> optionalEmployee = employeeRepository.findById(EmployeeId.of(employeeId));
 
         // then
         assertThat(optionalEmployee.isPresent()).isTrue();
@@ -94,5 +94,29 @@ public class RepositoryIT {
 
         final Absence absence = absences.get(0);
         assertThat(absence.isPaidLeave()).isFalse();
+    }
+
+    @Test
+    public void should_get_all_entities() {
+        // given
+        final Repository<Employee, EmployeeId> employeeRepository = createEmployeeRepository();
+
+        // when
+        final List<Employee> employees = employeeRepository.findAll();
+
+        // then
+        assertThat(employees).isNotNull().hasSize(5);
+    }
+
+    private Repository<SalariedEmployee, EmployeeId> createSalariedEmployeeRepository() {
+        return new Repository<>(SalariedEmployee.class, EntityManagers.from(PERSISTENCE_UNIT_NAME));
+    }
+
+    private Repository<HourlyEmployee, EmployeeId> createHourlyEmployeeRepository() {
+        return new Repository<>(HourlyEmployee.class, EntityManagers.from("PAYROLL_JPA"));
+    }
+
+    private Repository<Employee, EmployeeId> createEmployeeRepository() {
+        return new Repository<>(Employee.class, EntityManagers.from("PAYROLL_JPA"));
     }
 }
