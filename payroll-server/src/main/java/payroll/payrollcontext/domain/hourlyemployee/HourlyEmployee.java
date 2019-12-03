@@ -51,17 +51,17 @@ public class HourlyEmployee extends AbstractEntity<EmployeeId> implements Aggreg
         this.salaryOfHour = salaryOfHour;
     }
 
-    public Payroll payroll(Period period) {
+    public Payroll payroll(Period settlementPeriod) {
         if (Objects.isNull(timeCards) || timeCards.isEmpty()) {
-            return new Payroll(employeeId, period.getBeginDate(), period.getEndDate(), Salary.zero());
+            return new Payroll(employeeId, settlementPeriod.getBeginDate(), settlementPeriod.getEndDate(), Salary.zero());
         }
-        final Salary regularSalary = calculateRegularSalary(period);
-        final Salary overtimeSalary = calculateOvertimeSalary(period);
+        final Salary regularSalary = calculateRegularSalary(settlementPeriod);
+        final Salary overtimeSalary = calculateOvertimeSalary(settlementPeriod);
         final Salary totalSalary = regularSalary.add(overtimeSalary);
 
         return new Payroll(
-                employeeId, period.getBeginDate(),
-                period.getEndDate(),
+                employeeId, settlementPeriod.getBeginDate(),
+                settlementPeriod.getEndDate(),
                 totalSalary);
     }
 
