@@ -142,7 +142,7 @@ public class RepositoryIT {
         final Repository<Employee, EmployeeId> employeeRepository = createEmployeeRepository();
 
         final List<Employee> hourlyEmployees = employeeRepository
-                .findBy((builder, root) -> builder.equal(root.get("employeeType"), EmployeeType.HOURLY));
+                .findBy((builder, query, root) -> builder.equal(root.get("employeeType"), EmployeeType.HOURLY));
 
         assertThat(hourlyEmployees).isNotNull().hasSize(2);
     }
