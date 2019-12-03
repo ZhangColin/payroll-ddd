@@ -8,6 +8,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import java.time.LocalDate;
+import java.util.Objects;
 
 /**
  * @author colin
@@ -47,5 +48,22 @@ public class TimeCard {
 
     public int getRegularWorkHours() {
         return isOvertime() ? MAXIMUM_REGULAR_HOURS : getWorkHours();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        TimeCard timeCard = (TimeCard) o;
+        return Objects.equals(workDay, timeCard.workDay);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(workDay);
     }
 }

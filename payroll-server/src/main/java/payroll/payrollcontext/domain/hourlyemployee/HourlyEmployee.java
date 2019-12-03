@@ -87,8 +87,12 @@ public class HourlyEmployee extends AbstractEntity<EmployeeId> implements Aggreg
                 .filter(timeCard -> timeCard.isIn(period));
     }
 
-    public void submit(List<TimeCard> timeCards) {
-        this.timeCards.addAll(timeCards);
+    public void submit(List<TimeCard> submittedTimeCards) {
+        for (TimeCard timeCard : submittedTimeCards) {
+            if (!this.timeCards.contains(timeCard)) {
+                this.timeCards.add(timeCard);
+            }
+        }
     }
 
     @Override
