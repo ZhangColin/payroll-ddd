@@ -30,7 +30,7 @@ public class Employee  extends AbstractEntity<EmployeeId> implements AggregateRo
     @Embedded
     private Contact contact;
 
-    private LocalDate boardingDate;
+    private LocalDate onBoardingDate;
 
     @Override
     public EmployeeId id() {
@@ -74,7 +74,7 @@ public class Employee  extends AbstractEntity<EmployeeId> implements AggregateRo
     }
 
     public LocalDate boardingDate() {
-        return boardingDate;
+        return onBoardingDate;
     }
 
     @Override
