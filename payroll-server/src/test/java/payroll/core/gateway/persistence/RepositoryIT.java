@@ -1,16 +1,15 @@
 package payroll.core.gateway.persistence;
 
+import org.junit.Before;
 import org.junit.Test;
-import payroll.employeeontext.domain.Address;
-import payroll.employeeontext.domain.Contact;
-import payroll.employeeontext.domain.Employee;
-import payroll.employeeontext.domain.EmployeeId;
+import payroll.employeeontext.domain.*;
 import payroll.payrollcontext.domain.Salary;
 import payroll.payrollcontext.domain.hourlyemployee.HourlyEmployee;
 import payroll.payrollcontext.domain.hourlyemployee.TimeCard;
 import payroll.payrollcontext.domain.salariedemployee.Absence;
 import payroll.payrollcontext.domain.salariedemployee.SalariedEmployee;
 
+import javax.persistence.EntityManager;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
@@ -21,6 +20,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class RepositoryIT {
 
     public static final String PERSISTENCE_UNIT_NAME = "PAYROLL_JPA";
+    private EntityManager entityManager;
+
+    @Before
+    public void setUp() throws Exception {
+        entityManager = EntityManagers.from(PERSISTENCE_UNIT_NAME);
+    }
 
     @Test
     public void try_run_integration_test_only() {
@@ -108,15 +113,25 @@ public class RepositoryIT {
         assertThat(employees).isNotNull().hasSize(5);
     }
 
+    @Test
+    public void should_get_all_entities_by_criteria() {
+        final Repository<Employee, EmployeeId> employeeRepository = createEmployeeRepository();
+
+        final List<Employee> hourlyEmployees = employeeRepository
+                .findBy((builder, root) -> builder.equal(root.get("employeeType"), EmployeeType.HOURLY));
+
+        assertThat(hourlyEmployees).isNotNull().hasSize(2);
+    }
+
     private Repository<SalariedEmployee, EmployeeId> createSalariedEmployeeRepository() {
-        return new Repository<>(SalariedEmployee.class, EntityManagers.from(PERSISTENCE_UNIT_NAME));
+        return new Repository<>(SalariedEmployee.class, entityManager);
     }
 
     private Repository<HourlyEmployee, EmployeeId> createHourlyEmployeeRepository() {
-        return new Repository<>(HourlyEmployee.class, EntityManagers.from("PAYROLL_JPA"));
+        return new Repository<>(HourlyEmployee.class, entityManager);
     }
 
     private Repository<Employee, EmployeeId> createEmployeeRepository() {
-        return new Repository<>(Employee.class, EntityManagers.from("PAYROLL_JPA"));
+        return new Repository<>(Employee.class, entityManager);
     }
 }
