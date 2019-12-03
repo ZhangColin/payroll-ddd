@@ -31,4 +31,12 @@ public class Period {
         this.beginDate = LocalDate.of(year, month, 1);
         this.endDate = LocalDate.of(year, month, YearMonth.of(year, month).lengthOfMonth());
     }
+
+    public boolean contains(LocalDate date) {
+        if (date.isEqual(beginDate) || date.isEqual(endDate)) {
+            return true;
+        }
+
+        return date.isAfter(beginDate) && date.isBefore(endDate);
+    }
 }

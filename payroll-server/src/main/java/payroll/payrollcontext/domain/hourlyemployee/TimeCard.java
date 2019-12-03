@@ -1,6 +1,7 @@
 package payroll.payrollcontext.domain.hourlyemployee;
 
 import lombok.Getter;
+import payroll.payrollcontext.domain.Period;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -30,6 +31,10 @@ public class TimeCard {
     public TimeCard(LocalDate workDay, int workHours) {
         this.workDay = workDay;
         this.workHours = workHours;
+    }
+
+    public boolean isIn(Period period) {
+        return period.contains(workDay);
     }
 
     public int getOvertimeWorkHours() {
