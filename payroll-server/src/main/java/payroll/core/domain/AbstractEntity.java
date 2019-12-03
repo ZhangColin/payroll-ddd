@@ -1,5 +1,9 @@
 package payroll.core.domain;
 
+import payroll.payrollcontext.domain.hourlyemployee.TimeCard;
+
+import java.util.List;
+
 /**
  * @author colin
  */
