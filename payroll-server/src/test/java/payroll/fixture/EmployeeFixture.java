@@ -36,7 +36,13 @@ public class EmployeeFixture {
         final TimeCard timeCard4 = new TimeCard(LocalDate.of(2019, 11, 7), workHours4);
         final TimeCard timeCard5 = new TimeCard(LocalDate.of(2019, 11, 8), workHours5);
 
-        return asList(timeCard1, timeCard2, timeCard3, timeCard4, timeCard5);
+        final ArrayList<TimeCard> timeCards = new ArrayList<>();
+        timeCards.add(timeCard1);
+        timeCards.add(timeCard2);
+        timeCards.add(timeCard3);
+        timeCards.add(timeCard4);
+        timeCards.add(timeCard5);
+        return timeCards;
     }
 
     public static SalariedEmployee salariedEmployeeOf(String employeeId) {

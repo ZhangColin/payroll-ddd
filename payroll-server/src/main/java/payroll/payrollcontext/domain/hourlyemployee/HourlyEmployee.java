@@ -89,9 +89,13 @@ public class HourlyEmployee extends AbstractEntity<EmployeeId> implements Aggreg
 
     public void submit(List<TimeCard> submittedTimeCards) {
         for (TimeCard timeCard : submittedTimeCards) {
-            if (!this.timeCards.contains(timeCard)) {
-                this.timeCards.add(timeCard);
-            }
+            this.submit(timeCard);
+        }
+    }
+
+    public void submit(TimeCard submittedTimeCard) {
+        if (!this.timeCards.contains(submittedTimeCard)) {
+            this.timeCards.add(submittedTimeCard);
         }
     }
 
