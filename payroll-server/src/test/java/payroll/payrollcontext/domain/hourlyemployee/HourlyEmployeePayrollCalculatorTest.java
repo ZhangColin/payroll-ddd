@@ -18,7 +18,6 @@ import static org.mockito.Mockito.*;
 import static payroll.fixture.EmployeeFixture.hourlyEmployeeOf;
 
 public class HourlyEmployeePayrollCalculatorTest {
-
     private Period settlementPeriod;
     private HourlyEmployeeRepository mockRepository;
     private HourlyEmployeePayrollCalculator calculator;
