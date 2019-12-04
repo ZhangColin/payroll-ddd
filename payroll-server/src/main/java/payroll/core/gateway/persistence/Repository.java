@@ -13,15 +13,16 @@ import javax.persistence.criteria.Root;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * @author colin
+ */
 public class Repository<E extends AggregateRoot, ID extends Identity> {
     private final Class<E> entityClass;
     private final EntityManager entityManager;
-    private final TransactionScope transactionScope;
 
     public Repository(Class<E> entityClass, EntityManager entityManager) {
         this.entityClass = entityClass;
         this.entityManager = entityManager;
-        this.transactionScope = new TransactionScope(entityManager);
     }
 
     public Optional<E> findById(ID id) {
@@ -72,13 +73,11 @@ public class Repository<E extends AggregateRoot, ID extends Identity> {
             return;
         }
 
-        transactionScope.using(em->{
-            if (em.contains(entity)) {
-                em.merge(entity);
-            } else {
-                em.persist(entity);
-            }
-        });
+        if (entityManager.contains(entity)) {
+            entityManager.merge(entity);
+        } else {
+            entityManager.persist(entity);
+        }
     }
 
     public void delete(E entity) {
@@ -93,7 +92,7 @@ public class Repository<E extends AggregateRoot, ID extends Identity> {
             return;
         }
 
-        transactionScope.using(em->em.remove(entity));
+        entityManager.remove(entity);
     }
 
     private void requireEntityManagerNotNull() {
