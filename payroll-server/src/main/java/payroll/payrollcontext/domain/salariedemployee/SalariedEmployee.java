@@ -5,6 +5,7 @@ import org.hibernate.annotations.DiscriminatorOptions;
 import payroll.core.domain.AbstractEntity;
 import payroll.core.domain.AggregateRoot;
 import payroll.employeeontext.domain.EmployeeId;
+import payroll.payrollcontext.domain.Payrollable;
 import payroll.payrollcontext.domain.Salary;
 import payroll.payrollcontext.domain.Payroll;
 import payroll.payrollcontext.domain.Period;
@@ -20,7 +21,7 @@ import java.util.Objects;
 @DiscriminatorOptions(force = true)
 @DiscriminatorValue(value = "1")
 @Getter
-public class SalariedEmployee extends AbstractEntity<EmployeeId> implements AggregateRoot<SalariedEmployee> {
+public class SalariedEmployee extends AbstractEntity<EmployeeId> implements AggregateRoot<SalariedEmployee>, Payrollable {
     private static final int WORK_DAYS_OF_MONTH = 22;
 
     @EmbeddedId
@@ -46,6 +47,7 @@ public class SalariedEmployee extends AbstractEntity<EmployeeId> implements Aggr
         this.absences = absences;
     }
 
+    @Override
     public Payroll payroll(Period settlementPeriod) {
         if (Objects.isNull(absences) || absences.isEmpty()) {
             return new Payroll(employeeId, settlementPeriod.getBeginDate(), settlementPeriod.getEndDate(), salaryOfMonth);

@@ -2,9 +2,8 @@ package payroll.payrollcontext.domain.hourlyemployee;
 
 import org.junit.Before;
 import org.junit.Test;
-import payroll.payrollcontext.domain.Currency;
-import payroll.payrollcontext.domain.Salary;
 import payroll.payrollcontext.domain.Payroll;
+import payroll.payrollcontext.domain.PayrollCalculatorTest;
 import payroll.payrollcontext.domain.Period;
 
 import java.time.LocalDate;
@@ -17,7 +16,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
 import static payroll.fixture.EmployeeFixture.hourlyEmployeeOf;
 
-public class HourlyEmployeePayrollCalculatorTest {
+public class HourlyEmployeePayrollCalculatorTest extends PayrollCalculatorTest {
     private Period settlementPeriod;
     private HourlyEmployeeRepository mockRepository;
     private HourlyEmployeePayrollCalculator calculator;
@@ -27,8 +26,7 @@ public class HourlyEmployeePayrollCalculatorTest {
         settlementPeriod = new Period(LocalDate.of(2019, 11, 4),
                 LocalDate.of(2019, 11, 8));
         mockRepository = mock(HourlyEmployeeRepository.class);
-        calculator = new HourlyEmployeePayrollCalculator();
-        calculator.setRepository(mockRepository);
+        calculator = new HourlyEmployeePayrollCalculator(mockRepository);
     }
 
     @Test
@@ -59,7 +57,7 @@ public class HourlyEmployeePayrollCalculatorTest {
         // then
         verify(mockRepository, times(1)).allEmployeesOf();
         assertThat(payrolls).isNotNull().hasSize(1);
-        assertPayroll(employeeId, payrolls, 0, 4000);
+        assertPayroll(employeeId, payrolls, 0, settlementPeriod, 4000);
     }
 
     @Test
@@ -81,16 +79,9 @@ public class HourlyEmployeePayrollCalculatorTest {
         // then
         verify(mockRepository, times(1)).allEmployeesOf();
         assertThat(payrolls).isNotNull().hasSize(3);
-        assertPayroll(employeeId1, payrolls, 0, 4000);
-        assertPayroll(employeeId2, payrolls, 1, 4650);
-        assertPayroll(employeeId3, payrolls, 2, 0);
+        assertPayroll(employeeId1, payrolls, 0, settlementPeriod, 4000);
+        assertPayroll(employeeId2, payrolls, 1, settlementPeriod, 4650);
+        assertPayroll(employeeId3, payrolls, 2, settlementPeriod, 0);
     }
 
-    private void assertPayroll(String employeeId, List<Payroll> payrolls, int index, int payrollAmount) {
-        final Payroll payroll = payrolls.get(index);
-        assertThat(payroll.getEmployeeId().value()).isEqualTo(employeeId);
-        assertThat(payroll.getBeginDate()).isEqualTo(LocalDate.of(2019, 11, 4));
-        assertThat(payroll.getEndDate()).isEqualTo(LocalDate.of(2019, 11, 8));
-        assertThat(payroll.getAmount()).isEqualTo(Salary.of(payrollAmount, Currency.RMB));
-    }
 }

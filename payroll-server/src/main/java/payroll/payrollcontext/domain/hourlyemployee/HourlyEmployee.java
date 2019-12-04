@@ -5,6 +5,7 @@ import org.hibernate.annotations.DiscriminatorOptions;
 import payroll.core.domain.AbstractEntity;
 import payroll.core.domain.AggregateRoot;
 import payroll.employeeontext.domain.EmployeeId;
+import payroll.payrollcontext.domain.Payrollable;
 import payroll.payrollcontext.domain.Salary;
 import payroll.payrollcontext.domain.Payroll;
 import payroll.payrollcontext.domain.Period;
@@ -24,7 +25,7 @@ import java.util.stream.Stream;
 @DiscriminatorOptions(force = true)
 @DiscriminatorValue(value = "0")
 @Getter
-public class HourlyEmployee extends AbstractEntity<EmployeeId> implements AggregateRoot<HourlyEmployee> {
+public class HourlyEmployee extends AbstractEntity<EmployeeId> implements AggregateRoot<HourlyEmployee>, Payrollable {
     public static final double OVERTIME_FACTOR = 1.5;
 
     @EmbeddedId
@@ -53,6 +54,7 @@ public class HourlyEmployee extends AbstractEntity<EmployeeId> implements Aggreg
         }
     }
 
+    @Override
     public Payroll payroll(Period settlementPeriod) {
         if (Objects.isNull(timeCards) || timeCards.isEmpty()) {
             return new Payroll(employeeId, settlementPeriod.getBeginDate(), settlementPeriod.getEndDate(), Salary.zero());

@@ -31,7 +31,7 @@ public class Salary {
         return new Salary(value, currency);
     }
 
-    private Salary() {
+    protected Salary() {
 
     }
 

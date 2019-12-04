@@ -4,8 +4,9 @@ package payroll.payrollcontext.domain.salariedemployee;
 import org.junit.Before;
 import org.junit.Test;
 import payroll.payrollcontext.domain.Payroll;
+import payroll.payrollcontext.domain.PayrollCalculator;
+import payroll.payrollcontext.domain.PayrollCalculatorTest;
 import payroll.payrollcontext.domain.Period;
-import payroll.payrollcontext.domain.Salary;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -16,18 +17,18 @@ import static org.mockito.Mockito.*;
 import static payroll.fixture.EmployeeFixture.salariedEmployeeOf;
 import static payroll.fixture.EmployeeFixture.salariedEmployeeWithOneSickLeaveOf;
 
-public class SalariedEmployeePayrollCalculatorTest {
+public class SalariedEmployeePayrollCalculatorTest extends PayrollCalculatorTest {
     private Period settlementPeriod;
     private SalariedEmployeeRepository mockRepository;
     private List<SalariedEmployee> salariedEmployees;
-    private SalariedEmployeePayrollCalculator calculator;
+    private PayrollCalculator calculator;
 
     @Before
     public void setup() {
         settlementPeriod = new Period(LocalDate.of(2019, 11, 4), LocalDate.of(2019, 11, 8));
         mockRepository = mock(SalariedEmployeeRepository.class);
         salariedEmployees = new ArrayList<>();
-        calculator = new SalariedEmployeePayrollCalculator();
+        calculator = new SalariedEmployeePayrollCalculator(mockRepository);
     }
 
     @Test
@@ -35,11 +36,8 @@ public class SalariedEmployeePayrollCalculatorTest {
         // given
         when(mockRepository.allEmployeesOf()).thenReturn(new ArrayList<>());
 
-        final SalariedEmployeePayrollCalculator salariedEmployeePayrollCalculator = new SalariedEmployeePayrollCalculator();
-        salariedEmployeePayrollCalculator.setRepository(mockRepository);
-
         // when
-        List<Payroll> payrolls = salariedEmployeePayrollCalculator.execute(settlementPeriod);
+        List<Payroll> payrolls = calculator.execute(settlementPeriod);
 
         // then
         verify(mockRepository, times(1)).allEmployeesOf();
@@ -54,7 +52,6 @@ public class SalariedEmployeePayrollCalculatorTest {
         salariedEmployees.add(salariedEmployee);
 
         when(mockRepository.allEmployeesOf()).thenReturn(salariedEmployees);
-        calculator.setRepository(mockRepository);
 
         //when
         List<Payroll> payrolls = calculator.execute(settlementPeriod);
@@ -82,7 +79,6 @@ public class SalariedEmployeePayrollCalculatorTest {
         salariedEmployees.add(salariedEmployee3);
 
         when(mockRepository.allEmployeesOf()).thenReturn(salariedEmployees);
-        calculator.setRepository(mockRepository);
 
         //when
         List<Payroll> payrolls = calculator.execute(settlementPeriod);
@@ -94,13 +90,5 @@ public class SalariedEmployeePayrollCalculatorTest {
         assertPayroll(employeeId1, payrolls, 0, settlementPeriod, 9772.73);
         assertPayroll(employeeId2, payrolls, 1, settlementPeriod, 5000.00);
         assertPayroll(employeeId3, payrolls, 2, settlementPeriod, 8000.00);
-    }
-
-    private void assertPayroll(String employeeId, List<Payroll> payrolls, int index, Period settlementPeriod, double payrollAmount) {
-        Payroll payroll = payrolls.get(index);
-        assertThat(payroll.getEmployeeId().value()).isEqualTo(employeeId);
-        assertThat(payroll.getBeginDate()).isEqualTo(settlementPeriod.getBeginDate());
-        assertThat(payroll.getEndDate()).isEqualTo(settlementPeriod.getEndDate());
-        assertThat(payroll.getAmount()).isEqualTo(Salary.of(payrollAmount));
     }
 }
