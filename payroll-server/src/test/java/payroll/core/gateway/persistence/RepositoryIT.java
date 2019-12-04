@@ -3,6 +3,7 @@ package payroll.core.gateway.persistence;
 import org.junit.Before;
 import org.junit.Test;
 import payroll.employeeontext.domain.*;
+import payroll.fixture.EntityManagerFixture;
 import payroll.payrollcontext.domain.Salary;
 import payroll.payrollcontext.domain.hourlyemployee.HourlyEmployee;
 import payroll.payrollcontext.domain.hourlyemployee.TimeCard;
@@ -15,16 +16,15 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static payroll.fixture.EmployeeFixture.employeeOf;
 
 
 public class RepositoryIT {
-
-    public static final String PERSISTENCE_UNIT_NAME = "PAYROLL_JPA";
     private EntityManager entityManager;
 
     @Before
-    public void setUp() throws Exception {
-        entityManager = EntityManagers.from(PERSISTENCE_UNIT_NAME);
+    public void setUp() {
+        entityManager = EntityManagerFixture.createEntityManager();
     }
 
     @Test
@@ -145,6 +145,21 @@ public class RepositoryIT {
                 .findBy((builder, query, root) -> builder.equal(root.get("employeeType"), EmployeeType.HOURLY));
 
         assertThat(hourlyEmployees).isNotNull().hasSize(2);
+    }
+
+    @Test
+    public void should_add_new_employee_then_remove_it() {
+        final Repository<Employee, EmployeeId> employeeRepository = createEmployeeRepository();
+        final Employee employee = employeeOf("emp200109101000099", "test", "test@payroll.com", EmployeeType.HOURLY);
+
+        employeeRepository.saveOrUpdate(employee);
+
+        Optional<Employee> foundEmployee = employeeRepository.findById(EmployeeId.of("emp200109101000099"));
+        assertThat(foundEmployee.isPresent()).isTrue();
+
+        employeeRepository.delete(employee);
+        foundEmployee = employeeRepository.findById(EmployeeId.of("emp200109101000099"));
+        assertThat(foundEmployee.isPresent()).isFalse();
     }
 
     private Repository<SalariedEmployee, EmployeeId> createSalariedEmployeeRepository() {

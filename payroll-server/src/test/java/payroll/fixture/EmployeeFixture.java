@@ -1,6 +1,9 @@
 package payroll.fixture;
 
+import payroll.employeeontext.domain.Email;
+import payroll.employeeontext.domain.Employee;
 import payroll.employeeontext.domain.EmployeeId;
+import payroll.employeeontext.domain.EmployeeType;
 import payroll.payrollcontext.domain.Currency;
 import payroll.payrollcontext.domain.Salary;
 import payroll.payrollcontext.domain.hourlyemployee.HourlyEmployee;
@@ -88,5 +91,9 @@ public class EmployeeFixture {
 
     private static SalariedEmployee createSalariedEmployeeWithAbsences(String employeeId, Absence... leaves) {
         return new SalariedEmployee(EmployeeId.of(employeeId), salaryOfMonth, new ArrayList<>(asList(leaves)));
+    }
+
+    public static Employee employeeOf(String employeeId, String name, String email, EmployeeType employeeType) {
+        return new Employee(EmployeeId.of(employeeId), name, new Email(email), employeeType, LocalDate.now());
     }
 }

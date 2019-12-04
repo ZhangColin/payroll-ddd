@@ -8,13 +8,13 @@ CREATE TABLE timecards(
     PRIMARY KEY(id)
 );
 
-insert into timecards (employeeId, workDay, workHours) values ('emp200109101000001', '2019-09-02', 8);
-insert into timecards (employeeId, workDay, workHours) values ('emp200109101000001', '2019-09-03', 8);
-insert into timecards (employeeId, workDay, workHours) values ('emp200109101000001', '2019-09-04', 10);
-insert into timecards (employeeId, workDay, workHours) values ('emp200109101000001', '2019-09-05', 9);
-insert into timecards (employeeId, workDay, workHours) values ('emp200109101000001', '2019-09-06', 7);
-insert into timecards (employeeId, workDay, workHours) values ('emp201107101000002', '2019-09-02', 8);
-insert into timecards (employeeId, workDay, workHours) values ('emp201107101000002', '2019-09-03', 10);
-insert into timecards (employeeId, workDay, workHours) values ('emp201107101000002', '2019-09-04', 5);
-insert into timecards (employeeId, workDay, workHours) values ('emp201107101000002', '2019-09-05', 9);
-insert into timecards (employeeId, workDay, workHours) values ('emp201107101000002', '2019-09-06', 7);
+insert into timecards (employeeId, workDay, workHours) values ('emp200109101000001', '2019-11-04', 8);
+insert into timecards (employeeId, workDay, workHours) values ('emp200109101000001', '2019-11-05', 8);
+insert into timecards (employeeId, workDay, workHours) values ('emp200109101000001', '2019-11-06', 10);
+insert into timecards (employeeId, workDay, workHours) values ('emp200109101000001', '2019-11-07', 9);
+insert into timecards (employeeId, workDay, workHours) values ('emp200109101000001', '2019-11-08', 7);
+insert into timecards (employeeId, workDay, workHours) values ('emp201107101000002', '2019-11-04', 8);
+insert into timecards (employeeId, workDay, workHours) values ('emp201107101000002', '2019-11-05', 10);
+insert into timecards (employeeId, workDay, workHours) values ('emp201107101000002', '2019-11-06', 5);
+insert into timecards (employeeId, workDay, workHours) values ('emp201107101000002', '2019-11-07', 9);
+insert into timecards (employeeId, workDay, workHours) values ('emp201107101000002', '2019-11-08', 7);

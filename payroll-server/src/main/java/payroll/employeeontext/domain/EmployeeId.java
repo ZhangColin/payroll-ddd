@@ -25,7 +25,7 @@ public class EmployeeId implements Identity<String>, Serializable {
         random = new Random();
     }
 
-    private EmployeeId() {
+    protected EmployeeId() {
     }
 
     private EmployeeId(String value) {
@@ -51,12 +51,29 @@ public class EmployeeId implements Identity<String>, Serializable {
 
     private static final String COMPOSE_PREFIX ="emp";
 
-
     private static String composeTimestamp() {
         return LocalDate.now().format(DateTimeFormatter.ofPattern("yyyyMMdd"));
     }
 
     private static String composeRandomNumber() {
-        return String.valueOf(random.nextInt(999999));
+        int length = 6;
+        final String number = String.valueOf(random.nextInt(999999));
+        if (number.length() == length) {
+            return number;
+        }
+        if (number.length() < length) {
+            return appendWithZero(number, length);
+        }
+        return number.substring(0, length);
+    }
+
+    private static String appendWithZero(String str, int length) {
+        int numberOfZero = length-str.length();
+        final StringBuilder stringBuilder = new StringBuilder();
+        for (int i = 0; i < numberOfZero; i++) {
+            stringBuilder.append("0");
+        }
+        stringBuilder.append(str);
+        return stringBuilder.toString();
     }
 }

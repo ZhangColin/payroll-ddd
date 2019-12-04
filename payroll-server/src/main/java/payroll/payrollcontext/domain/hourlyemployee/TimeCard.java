@@ -3,10 +3,7 @@ package payroll.payrollcontext.domain.hourlyemployee;
 import lombok.Getter;
 import payroll.payrollcontext.domain.Period;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.Objects;
 
@@ -20,12 +17,12 @@ public class TimeCard {
     public static final int MAXIMUM_REGULAR_HOURS = 8;
 
     @Id
-    @GeneratedValue
-    private String id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id;
     private LocalDate workDay;
     private int workHours;
 
-    private TimeCard() {
+    protected TimeCard() {
 
     }
 

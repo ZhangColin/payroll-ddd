@@ -33,11 +33,11 @@ public class HourlyEmployee extends AbstractEntity<EmployeeId> implements Aggreg
     @Embedded
     private Salary salaryOfHour;
 
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "employeeId", nullable = false)
     private List<TimeCard> timeCards = new ArrayList<>();
 
-    private HourlyEmployee() {
+    protected HourlyEmployee() {
 
     }
 
@@ -91,6 +91,10 @@ public class HourlyEmployee extends AbstractEntity<EmployeeId> implements Aggreg
         for (TimeCard timeCard : submittedTimeCards) {
             this.submit(timeCard);
         }
+    }
+
+    public void remove(TimeCard removedTimeCard) {
+        this.timeCards.remove(removedTimeCard);
     }
 
     public void submit(TimeCard submittedTimeCard) {
