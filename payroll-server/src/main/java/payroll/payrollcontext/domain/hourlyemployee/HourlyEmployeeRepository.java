@@ -1,9 +1,13 @@
 package payroll.payrollcontext.domain.hourlyemployee;
 
-import payroll.payrollcontext.domain.Period;
+import payroll.employeeontext.domain.EmployeeId;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface HourlyEmployeeRepository {
-    List<HourlyEmployee> allEmployeesOf(Period settlementPeriod);
+    Optional<HourlyEmployee> employeeOf(EmployeeId employeeId);
+    List<HourlyEmployee> allEmployeesOf();
+
+    void save(HourlyEmployee employee);
 }

@@ -35,13 +35,13 @@ public class HourlyEmployeePayrollCalculatorTest {
     @Test
     public void should_calculate_payroll_when_no_matched_employee_found() {
         // given
-        when(mockRepository.allEmployeesOf(settlementPeriod)).thenReturn(new ArrayList<>());
+        when(mockRepository.allEmployeesOf()).thenReturn(new ArrayList<>());
 
         // when
         final List<Payroll> payrolls = calculator.execute(settlementPeriod);
 
         // then
-        verify(mockRepository, times(1)).allEmployeesOf(settlementPeriod);
+        verify(mockRepository, times(1)).allEmployeesOf();
         assertThat(payrolls).isNotNull().isEmpty();
     }
 
@@ -52,13 +52,13 @@ public class HourlyEmployeePayrollCalculatorTest {
         final HourlyEmployee hourlyEmployee = hourlyEmployeeOf(employeeId, 8, 8, 8, 8, 8);
         final List<HourlyEmployee> hourlyEmployees = singletonList(hourlyEmployee);
 
-        when(mockRepository.allEmployeesOf(settlementPeriod)).thenReturn(hourlyEmployees);
+        when(mockRepository.allEmployeesOf()).thenReturn(hourlyEmployees);
 
         // when
         final List<Payroll> payrolls = calculator.execute(settlementPeriod);
 
         // then
-        verify(mockRepository, times(1)).allEmployeesOf(settlementPeriod);
+        verify(mockRepository, times(1)).allEmployeesOf();
         assertThat(payrolls).isNotNull().hasSize(1);
         assertPayroll(employeeId, payrolls, 0, 4000);
     }
@@ -74,13 +74,13 @@ public class HourlyEmployeePayrollCalculatorTest {
         final HourlyEmployee hourlyEmployee3 = hourlyEmployeeOf(employeeId3, null);
         final List<HourlyEmployee> hourlyEmployees = asList(hourlyEmployee1, hourlyEmployee2, hourlyEmployee3);
 
-        when(mockRepository.allEmployeesOf(settlementPeriod)).thenReturn(hourlyEmployees);
+        when(mockRepository.allEmployeesOf()).thenReturn(hourlyEmployees);
 
         // when
         final List<Payroll> payrolls = calculator.execute(settlementPeriod);
 
         // then
-        verify(mockRepository, times(1)).allEmployeesOf(settlementPeriod);
+        verify(mockRepository, times(1)).allEmployeesOf();
         assertThat(payrolls).isNotNull().hasSize(3);
         assertPayroll(employeeId1, payrolls, 0, 4000);
         assertPayroll(employeeId2, payrolls, 1, 4650);
