@@ -10,7 +10,7 @@ import static java.util.stream.Collectors.toList;
 public class SalariedEmployeePayrollCalculator {
     private SalariedEmployeeRepository employeeRepository;
 
-    public void setEmployeeRepository(SalariedEmployeeRepository employeeRepository) {
+    public void setRepository(SalariedEmployeeRepository employeeRepository) {
         this.employeeRepository = employeeRepository;
     }
 
