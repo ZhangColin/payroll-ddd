@@ -2,14 +2,20 @@ package payroll.payrollcontext.domain.hourlyemployee;
 
 import payroll.employeeontext.domain.EmployeeId;
 
-public class TimeCardService {
-    private HourlyEmployeeRepository hourlyEmployeeRepository;
+import java.util.Optional;
 
-    public void setHourlyEmployeeRepository(HourlyEmployeeRepository hourlyEmployeeRepository) {
-        this.hourlyEmployeeRepository = hourlyEmployeeRepository;
+public class TimeCardService {
+    private HourlyEmployeeRepository employeeRepository;
+
+    public void setEmployeeRepository(HourlyEmployeeRepository employeeRepository) {
+        this.employeeRepository = employeeRepository;
     }
 
     public void submitTimeCard(EmployeeId employeeId, TimeCard submitted) {
-
+        final Optional<HourlyEmployee> optionalHourlyEmployee = employeeRepository.employeeOf(employeeId);
+        optionalHourlyEmployee.ifPresent(hourlyEmployee->{
+            hourlyEmployee.submit(submitted);
+            employeeRepository.save(hourlyEmployee);
+        });
     }
 }
